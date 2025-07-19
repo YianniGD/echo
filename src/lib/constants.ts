@@ -1,0 +1,11 @@
+export const LOCAL_STORAGE_KEY_JOURNAL_ENTRIES = 'echo_journal_entries';
+export const LOCAL_STORAGE_KEY_THOUGHT_RECORDS = 'echo_thought_records';
+export const LOCAL_STORAGE_KEY_DAILY_PLANS = 'echo_daily_plans';
+export const LOCAL_STORAGE_KEY_WEEKLY_PLANS = 'echo_weekly_plans';
+export const LOCAL_STORAGE_KEY_MEDICATIONS = 'echo_medications';
+export const LOCAL_STORAGE_KEY_MEDICATION_LOGS = 'echo_medication_logs';
+export const LOCAL_STORAGE_KEY_THEME = 'echo_theme';
+export const LOCAL_STORAGE_KEY_PALETTE = 'echo_palette';
+export const LOCAL_STORAGE_KEY_MEDICATION_GROUPS = 'echo_medication_groups';
+export const LOCAL_STORAGE_KEY_CALENDAR_EVENTS = 'echo_calendar_events';
+export const LOCAL_STORAGE_KEY_PROFILE_DATA = 'echo_profile_data';
