@@ -1,20 +1,24 @@
+// app/next.config.ts
 import type {NextConfig} from 'next';
+
+const isGithubPages = process.env.NEXT_PUBLIC_IS_GITHUB_PAGES === 'true';
 
 const withPWA = require('@ducanh2912/next-pwa').default({
   dest: 'public',
   register: true,
   skipWaiting: true,
-  disable: process.env.NODE_ENV === 'development',
+  disable: false, // Set to false to always enable, or base on a different env var
 });
 
 const nextConfig: NextConfig = {
-  /* config options here */
-  output: 'export', // Add this line for static HTML export
+  output: 'export',
+  basePath: isGithubPages ? '/echo' : undefined, // Apply basePath only for GitHub Pages
+  assetPrefix: isGithubPages ? '/echo/' : undefined, // Apply assetPrefix only for GitHub Pages
   typescript: {
-    ignoreBuildErrors: true,
+    ignoreBuildErrors: false,
   },
   eslint: {
-    ignoreDuringBuilds: true,
+    ignoreDuringBuilds: false,
   },
   images: {
     remotePatterns: [
@@ -27,8 +31,9 @@ const nextConfig: NextConfig = {
     ],
   },
   turbopack: {
-    // Add your Turbopack options here
+    // This object should be empty or contain actual Turbopack configurations
+    // The 'scripts' object was incorrectly placed here
   },
 };
 
-export default withPWA(nextConfig);
+module.exports = withPWA(nextConfig);

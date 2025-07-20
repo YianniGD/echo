@@ -318,8 +318,9 @@ export const EchoApp: React.FC = () => {
   }, []);
 
   const handleUpdateMedication = useCallback((updatedMed: Medication) => {
-    setMedications(prevMeds => prevMeds.map(med => med.id === updatedMed.id ? { ...updatedMed, frequency: updatedMed.frequency.trim() || 'As needed' } : med).sort((a,b) => b.addedTimestamp - a.timestamp));
+    setMedications(prevMeds => prevMeds.map(med => med.id === updatedMed.id ? { ...updatedMed, frequency: updatedMed.frequency.trim() || 'As needed' } : med).sort((a,b) => b.addedTimestamp - a.addedTimestamp));
   }, []);
+// ...
 
   const handleDeleteMedication = useCallback((id: string) => {
     setMedications(prevMeds => prevMeds.filter(med => med.id !== id));
