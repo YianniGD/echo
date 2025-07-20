@@ -1,6 +1,10 @@
+// app/src/app/api/env/route.ts
+export const dynamic = 'force-static'; // Add this line
 
-import { NextResponse } from 'next/server';
+// Your existing API route logic will follow here.
+// For example:
+// import { NextResponse } from 'next/server';
 
-export function GET() {
-  return NextResponse.json({ message: 'This endpoint is no longer used.' });
-}
+// export async function GET() {
+//   return NextResponse.json({ message: 'Hello from API env!' });
+// }

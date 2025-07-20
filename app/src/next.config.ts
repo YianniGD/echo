@@ -1,4 +1,3 @@
-
 import type {NextConfig} from 'next';
 
 const withPWA = require('@ducanh2912/next-pwa').default({
@@ -10,6 +9,7 @@ const withPWA = require('@ducanh2912/next-pwa').default({
 
 const nextConfig: NextConfig = {
   /* config options here */
+  output: 'export', // Add this line for static HTML export
   typescript: {
     ignoreBuildErrors: true,
   },
@@ -25,6 +25,9 @@ const nextConfig: NextConfig = {
         pathname: '/**',
       },
     ],
+  },
+  turbopack: {
+    // Add your Turbopack options here
   },
 };
 

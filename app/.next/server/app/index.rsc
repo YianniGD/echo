@@ -1,0 +1,23 @@
+1:"$Sreact.fragment"
+2:I[87555,[],""]
+3:I[31295,[],""]
+4:I[55928,["769","static/chunks/769-b21c1b5572d0b066.js","175","static/chunks/175-542a656506dd4a83.js","177","static/chunks/app/layout-e931359d6d2919a1.js"],"Toaster"]
+5:I[90894,[],"ClientPageRoot"]
+6:I[52868,["930","static/chunks/164f4fb6-35a1d80fc173da1a.js","769","static/chunks/769-b21c1b5572d0b066.js","843","static/chunks/843-edf7b133392c6dc4.js","974","static/chunks/app/page-a48e830f4b533e46.js"],"default"]
+9:I[59665,[],"MetadataBoundary"]
+b:I[59665,[],"OutletBoundary"]
+e:I[74911,[],"AsyncMetadataOutlet"]
+10:I[59665,[],"ViewportBoundary"]
+12:I[26614,[],""]
+:HL["/_next/static/css/d5af4e7d8f88dd0a.css","style"]
+0:{"P":null,"b":"w_lGRYdINRJFxEiA3WQT7","p":"","c":["",""],"i":false,"f":[[["",{"children":["__PAGE__",{}]},"$undefined","$undefined",true],["",["$","$1","c",{"children":[[["$","link","0",{"rel":"stylesheet","href":"/_next/static/css/d5af4e7d8f88dd0a.css","precedence":"next","crossOrigin":"$undefined","nonce":"$undefined"}]],["$","html",null,{"lang":"en","suppressHydrationWarning":true,"children":[["$","head",null,{"children":[["$","meta",null,{"name":"theme-color","content":"#9D7CBF"}],["$","link",null,{"rel":"apple-touch-icon","href":"/icons/icon-192x192.png"}],["$","link",null,{"rel":"preconnect","href":"https://fonts.googleapis.com"}],["$","link",null,{"rel":"preconnect","href":"https://fonts.gstatic.com","crossOrigin":"anonymous"}],["$","link",null,{"href":"https://fonts.googleapis.com/css2?family=Geologica:wght@500&family=Noto+Sans:wght@400;500;600;700&family=Noto+Serif:ital,wght@0,400;0,600;0,900;1,400;1,600&display=swap","rel":"stylesheet"}]]}],["$","body",null,{"children":[["$","$L2",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L3",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":[[["$","title",null,{"children":"404: This page could not be found."}],["$","div",null,{"style":{"fontFamily":"system-ui,\"Segoe UI\",Roboto,Helvetica,Arial,sans-serif,\"Apple Color Emoji\",\"Segoe UI Emoji\"","height":"100vh","textAlign":"center","display":"flex","flexDirection":"column","alignItems":"center","justifyContent":"center"},"children":["$","div",null,{"children":[["$","style",null,{"dangerouslySetInnerHTML":{"__html":"body{color:#000;background:#fff;margin:0}.next-error-h1{border-right:1px solid rgba(0,0,0,.3)}@media (prefers-color-scheme:dark){body{color:#fff;background:#000}.next-error-h1{border-right:1px solid rgba(255,255,255,.3)}}"}}],["$","h1",null,{"className":"next-error-h1","style":{"display":"inline-block","margin":"0 20px 0 0","padding":"0 23px 0 0","fontSize":24,"fontWeight":500,"verticalAlign":"top","lineHeight":"49px"},"children":404}],["$","div",null,{"style":{"display":"inline-block"},"children":["$","h2",null,{"style":{"fontSize":14,"fontWeight":400,"lineHeight":"49px","margin":0},"children":"This page could not be found."}]}]]}]}]],[]],"forbidden":"$undefined","unauthorized":"$undefined"}],["$","$L4",null,{}]]}]]}]]}],{"children":["__PAGE__",["$","$1","c",{"children":[["$","$L5",null,{"Component":"$6","searchParams":{},"params":{},"promises":["$@7","$@8"]}],["$","$L9",null,{"children":"$La"}],null,["$","$Lb",null,{"children":["$Lc","$Ld",["$","$Le",null,{"promise":"$@f"}]]}]]}],{},null,false]},null,false],["$","$1","h",{"children":[null,["$","$1","ktdVshS1yGCo1H4kmV7NG",{"children":[["$","$L10",null,{"children":"$L11"}],null]}],null]}],false]],"m":"$undefined","G":["$12","$undefined"],"s":false,"S":true}
+13:"$Sreact.suspense"
+14:I[74911,[],"AsyncMetadata"]
+7:{}
+8:{}
+a:["$","$13",null,{"fallback":null,"children":["$","$L14",null,{"promise":"$@15"}]}]
+d:null
+11:[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}]]
+c:null
+15:{"metadata":[["$","title","0",{"children":"echo"}],["$","meta","1",{"name":"description","content":"A calm, introspective journal to organize your thoughts, track your well-being, and reflect on your daily life."}],["$","link","2",{"rel":"manifest","href":"/manifest.json","crossOrigin":"$undefined"}],["$","link","3",{"rel":"icon","href":"/favicon.ico","type":"image/x-icon","sizes":"192x192"}]],"error":null,"digest":"$undefined"}
+f:{"metadata":"$15:metadata","error":null,"digest":"$undefined"}
