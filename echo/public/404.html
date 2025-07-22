@@ -1,16 +1,32 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8">
-    <title>Redirecting...</title>
-    <script>
-      const path = window.location.pathname;
+<head>
+  <meta charset="utf-8">
+  <title>echo - Page Not Found</title>
+  <script type="text/javascript">
+    (function() {
+      // The base path for your GitHub Pages site, e.g., '/echo'
       const basePath = '/echo';
-      let segment = path.startsWith(basePath) ? path.substring(basePath.length) : path;
-      window.location.replace(basePath + '/?p=' + encodeURIComponent(segment));
-    </script>
-  </head>
-  <body>
-    <p>If you are not redirected automatically, <a id="redirect-link" href="#">click here</a>.</p>
-  </body>
+      
+      // Get the full path from the URL, like '/echo/app'
+      const fullPath = window.location.pathname;
+
+      // Extract the part of the path that comes *after* the basePath
+      // This will be the client-side route, e.g., '/app'
+      let clientSidePath = '/'; // Default to root
+      if (fullPath.startsWith(basePath + '/')) {
+        clientSidePath = fullPath.substring(basePath.length);
+      }
+      
+      // Construct the redirect URL. We want to go to the root of the site (basePath)
+      // and pass the client-side path as a hash, so the Next.js router can handle it.
+      const redirectUrl = window.location.protocol + '//' + window.location.host + basePath + '#' + clientSidePath;
+      
+      // Perform the redirect
+      window.location.replace(redirectUrl);
+    })();
+  </script>
+</head>
+<body>
+</body>
 </html>
