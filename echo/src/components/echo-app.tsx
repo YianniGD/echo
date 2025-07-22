@@ -4,15 +4,15 @@
 import React, { useState, useEffect, useCallback, useRef, useMemo } from 'react';
 import { JournalEntry, DailyPlan, WeeklyPlannerData, ThoughtRecord, ThoughtRecordData, Medication, MedicationLogEntry, MedicationGroup, CalendarEvent, ProfileData, View, Theme, Palette, CopingMechanism } from '@/lib/types';
 import { LOCAL_STORAGE_KEY_THEME } from '@/lib/constants';
-import { 
-  loadEntries, 
-  saveEntries, 
+import {
+  loadEntries,
+  saveEntries,
   downloadJournalData,
   loadThoughtRecords,
   saveThoughtRecords,
   loadDailyPlans,
   saveDailyPlans,
-  loadWeeklyPlans, 
+  loadWeeklyPlans,
   saveWeeklyPlans,
   loadMedications,
   saveMedications,
@@ -28,7 +28,7 @@ import {
   saveTheme,
 } from '@/lib/services/storageService';
 import Navbar from '@/components/echo/Navbar';
-import SidebarNavDrawer from '@/components/echo/SidebarNavDrawer'; 
+import SidebarNavDrawer from '@/components/echo/SidebarNavDrawer';
 import DashboardPage from '@/components/echo/dashboard/DashboardPage';
 import JournalInput from '@/components/echo/JournalInput';
 import JournalList from '@/components/echo/JournalList';
@@ -36,7 +36,7 @@ import JournalEntryViewModal from '@/components/echo/JournalEntryViewModal';
 import ThoughtRecordListPage from '@/components/echo/ThoughtRecordPage';
 import ThoughtRecordForm from '@/components/echo/ThoughtRecordForm';
 import ThoughtRecordViewModal from '@/components/echo/ThoughtRecordViewModal';
-import PlannerPage from '@/components/echo/DailyPlannerPage'; 
+import PlannerPage from '@/components/echo/DailyPlannerPage';
 import MedicationPage from '@/components/echo/MedicationPage';
 import AffirmationsPage from '@/components/echo/AffirmationsPage';
 import ProfilePage from '@/components/echo/ProfilePage';
@@ -44,7 +44,7 @@ import ResourcesPage from '@/components/echo/ResourcesPage';
 import DesignSystemPage from '@/components/echo/DesignSystemPage';
 import ActionButton from './echo/ActionButton';
 import ThemeToggleButton from '@/components/echo/ThemeToggleButton';
-import { 
+import {
   XCircle,
   Plus,
 } from 'lucide-react';
@@ -59,7 +59,7 @@ export const EchoApp: React.FC = () => {
   const [journalEntries, setJournalEntries] = useState<JournalEntry[]>([]);
   const [thoughtRecords, setThoughtRecords] = useState<ThoughtRecord[]>([]);
   const [dailyPlans, setDailyPlans] = useState<Record<string, DailyPlan>>({});
-  const [weeklyPlans, setWeeklyPlans] = useState<Record<string, WeeklyPlannerData>>({}); 
+  const [weeklyPlans, setWeeklyPlans] = useState<Record<string, WeeklyPlannerData>>({});
   const [medications, setMedications] = useState<Medication[]>([]);
   const [medicationLogs, setMedicationLogs] = useState<MedicationLogEntry[]>([]);
   const [medicationGroups, setMedicationGroups] = useState<MedicationGroup[]>([]);
@@ -76,7 +76,7 @@ export const EchoApp: React.FC = () => {
   const [selectedThoughtRecordForView, setSelectedThoughtRecordForView] = useState<ThoughtRecord | null>(null);
   
   // General App State
-  const [currentView, setCurrentView] = useState<View>('dashboard'); 
+  const [currentView, setCurrentView] = useState<View>('dashboard');
   const [theme, setTheme] = useState<Theme | null>(null);
   const [palette, setPalette] = useState<Palette | null>(null);
   const [isDrawerOpen, setIsDrawerOpen] = useState<boolean>(false);
@@ -124,7 +124,7 @@ export const EchoApp: React.FC = () => {
     setMedicationGroups(loadMedicationGroups());
     setMedicationLogs(loadMedicationLogs());
     setDailyPlans(loadDailyPlans());
-    setWeeklyPlans(loadWeeklyPlans()); 
+    setWeeklyPlans(loadWeeklyPlans());
     setMounted(true);
   }, []);
   
@@ -238,7 +238,7 @@ export const EchoApp: React.FC = () => {
   }, []);
 
   // --- General App Handlers ---
-  const handleDownloadJournal = () => downloadJournalData(journalEntries); 
+  const handleDownloadJournal = () => downloadJournalData(journalEntries);
   const handleUpdateProfile = (newProfileData: ProfileData) => setProfileData(newProfileData);
   const handleAddCopingMechanism = useCallback((mechanism: CopingMechanism) => {
     if (!profileData) return;
@@ -281,8 +281,8 @@ export const EchoApp: React.FC = () => {
     setMedicationLogs(prevLogs => [newLogEntry, ...prevLogs]);
   }, []);
 
-  const handleClearMedicationLog = useCallback(() => { 
-    setMedicationLogs([]); 
+  const handleClearMedicationLog = useCallback(() => {
+    setMedicationLogs([]);
   }, []);
 
   const handleAddMedicationGroup = useCallback((name: string, medicationIds: string[]) => {
@@ -292,8 +292,8 @@ export const EchoApp: React.FC = () => {
 
   const handleUpdateMedicationGroup = useCallback((updatedGroup: MedicationGroup) => { setMedicationGroups(prevGroups => prevGroups.map(group => group.id === updatedGroup.id ? updatedGroup : group)); }, []);
   
-  const handleDeleteMedicationGroup = useCallback((groupId: string) => { 
-    setMedicationGroups(prevGroups => prevGroups.filter(group => group.id !== groupId)); 
+  const handleDeleteMedicationGroup = useCallback((groupId: string) => {
+    setMedicationGroups(prevGroups => prevGroups.filter(group => group.id !== groupId));
   }, []);
 
   const handleLogMedicationBundle = useCallback((groupId: string) => {
@@ -319,29 +319,29 @@ export const EchoApp: React.FC = () => {
     setCalendarEvents(prevEvents => prevEvents.filter(event => event.id !== eventId));
   }, []);
 
-  const handleClearJournalData = useCallback(() => { 
-    setJournalEntries([]); 
-    setThoughtRecords([]); 
+  const handleClearJournalData = useCallback(() => {
+    setJournalEntries([]);
+    setThoughtRecords([]);
   }, []);
-  const handleClearPlannerData = useCallback(() => { 
-    setDailyPlans({}); 
-    setWeeklyPlans({}); 
+  const handleClearPlannerData = useCallback(() => {
+    setDailyPlans({});
+    setWeeklyPlans({});
   }, []);
   const handleClearMedicationData = useCallback(() => {
-    setMedications([]); 
-    setMedicationLogs([]); 
-    setMedicationGroups([]); 
+    setMedications([]);
+    setMedicationLogs([]);
+    setMedicationGroups([]);
   }, []);
-  const handleClearAllData = useCallback(() => { 
-    setJournalEntries([]); 
-    setThoughtRecords([]); 
-    setDailyPlans({}); 
-    setWeeklyPlans({}); 
-    setMedications([]); 
-    setMedicationLogs([]); 
-    setMedicationGroups([]); 
-    setCalendarEvents([]); 
-    setProfileData({ name: '', strengths: [], copingMechanisms: [], dashboardWidgets: {}, favoriteAffirmations: [] }); 
+  const handleClearAllData = useCallback(() => {
+    setJournalEntries([]);
+    setThoughtRecords([]);
+    setDailyPlans({});
+    setWeeklyPlans({});
+    setMedications([]);
+    setMedicationLogs([]);
+    setMedicationGroups([]);
+    setCalendarEvents([]);
+    setProfileData({ name: '', strengths: [], copingMechanisms: [], dashboardWidgets: {}, favoriteAffirmations: [] });
   }, []);
 
   const handleSavePlanToJournal = useCallback((planText: string) => {
@@ -384,13 +384,13 @@ export const EchoApp: React.FC = () => {
 
   const renderContent = () => {
     switch (currentView) {
-        case 'dashboard': return <DashboardPage 
-            dailyPlans={dailyPlans} 
-            medications={medications} 
-            medicationGroups={medicationGroups} 
+        case 'dashboard': return <DashboardPage
+            dailyPlans={dailyPlans}
+            medications={medications}
+            medicationGroups={medicationGroups}
             profileData={profileData}
             onUpdateProfile={handleUpdateProfile}
-            onNavigateToView={navigateToView} 
+            onNavigateToView={navigateToView}
           />;
         case 'journal': return <div className="relative flex justify-center"><JournalList entries={journalEntries} onViewEntry={handleViewEntry} onEdit={handleEditJournalClick} onDelete={handleDeleteJournalEntry} /></div>;
         case 'journal-new':
@@ -400,35 +400,35 @@ export const EchoApp: React.FC = () => {
         case 'thoughtRecord-new':
         case 'thoughtRecord-edit':
             return <div className="flex justify-center h-full"><div className="max-w-3xl w-full"><ThoughtRecordForm initialData={editingThoughtRecord} onSave={handleSaveThoughtRecord} onClose={handleCloseThoughtRecordForm} isActive={true} /></div></div>;
-        case 'planner': return <div className="flex justify-center"><PlannerPage 
-            getDailyPlan={getDailyPlanByDate} 
-            saveDailyPlan={updateDailyPlan} 
-            getWeeklyPlan={getWeeklyPlanByDate} 
-            saveWeeklyPlan={updateWeeklyPlan} 
+        case 'planner': return <div className="flex justify-center"><PlannerPage
+            getDailyPlan={getDailyPlanByDate}
+            saveDailyPlan={updateDailyPlan}
+            getWeeklyPlan={getWeeklyPlanByDate}
+            saveWeeklyPlan={updateWeeklyPlan}
             onSavePlanToJournal={handleSavePlanToJournal}
-            events={calendarEvents} 
-            journalEntries={journalEntries} 
+            events={calendarEvents}
+            journalEntries={journalEntries}
             thoughtRecords={thoughtRecords}
-            onAddEvent={handleAddCalendarEvent} 
-            onUpdateEvent={handleUpdateCalendarEvent} 
-            onDeleteEvent={handleDeleteCalendarEvent} 
-            onViewJournalEntry={handleViewEntry} 
+            onAddEvent={handleAddCalendarEvent}
+            onUpdateEvent={handleUpdateCalendarEvent}
+            onDeleteEvent={handleDeleteCalendarEvent}
+            onViewJournalEntry={handleViewEntry}
             onViewThoughtRecord={setSelectedThoughtRecordForView}
           /></div>;
         case 'medication': return <div className="flex justify-center"><MedicationPage medications={medications} medicationLogs={medicationLogs} medicationGroups={medicationGroups} onAddMedication={handleAddMedication} onUpdateMedication={handleUpdateMedication} onDeleteMedication={handleDeleteMedication} onLogMedicationIntake={handleLogMedicationIntake} onClearMedicationLog={handleClearMedicationLog} onAddMedicationGroup={handleAddMedicationGroup} onUpdateMedicationGroup={handleUpdateMedicationGroup} onDeleteMedicationGroup={handleDeleteMedicationGroup} onLogMedicationBundle={handleLogMedicationBundle} /></div>;
         case 'affirmations': return <AffirmationsPage profileData={profileData} onUpdateProfile={handleUpdateProfile} />;
-        case 'profile': return <div className="flex justify-center"><ProfilePage 
-            profileData={profileData} 
+        case 'profile': return <div className="flex justify-center"><ProfilePage
+            profileData={profileData}
             onUpdateProfile={handleUpdateProfile}
-            currentTheme={theme} 
-            currentPalette={palette} 
-            onToggleTheme={toggleTheme} 
-            onChangePalette={handleChangePalette} 
-            onDownloadJournal={handleDownloadJournal} 
-            onClearJournal={handleClearJournalData} 
-            onClearPlanner={handleClearPlannerData} 
-            onClearMedication={handleClearMedicationData} 
-            onClearAllData={handleClearAllData} 
+            currentTheme={theme}
+            currentPalette={palette}
+            onToggleTheme={toggleTheme}
+            onChangePalette={handleChangePalette}
+            onDownloadJournal={handleDownloadJournal}
+            onClearJournal={handleClearJournalData}
+            onClearPlanner={handleClearPlannerData}
+            onClearMedication={handleClearMedicationData}
+            onClearAllData={handleClearAllData}
             onNavigateToView={navigateToView}
             onReOnboard={() => setProfileData({ ...profileData, name: '' })}
             /></div>;

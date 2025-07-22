@@ -2,13 +2,13 @@
 'use client';
 import React, { useState, useEffect } from 'react';
 import ActionButton from '@/components/echo/ActionButton';
-import { 
+import {
   Clipboard,
   Calendar as PlannerIcon,
-  MinusCircle, 
+  MinusCircle,
   X,
   Cloud,
-  Edit3, 
+  Edit3,
   Home,
   Sunrise,
   User,
@@ -53,17 +53,17 @@ const SidebarNavDrawer: React.FC<SidebarNavDrawerProps> = ({
     let timeoutId: number;
 
     if (isOpen) {
-      setIsRendered(true); 
+      setIsRendered(true);
       frameId1 = requestAnimationFrame(() => {
         frameId2 = requestAnimationFrame(() => {
           setApplyTransitionState(true);
         });
       });
     } else {
-      setApplyTransitionState(false); 
+      setApplyTransitionState(false);
       timeoutId = window.setTimeout(() => {
         setIsRendered(false);
-      }, 1000); 
+      }, 1000);
     }
     return () => {
       cancelAnimationFrame(frameId1);
@@ -87,7 +87,7 @@ const SidebarNavDrawer: React.FC<SidebarNavDrawerProps> = ({
     return currentView === baseView;
   }
 
-  const NavItemButton: React.FC<{ 
+  const NavItemButton: React.FC<{
     item: { label: string; view: View; icon: React.ReactNode; 'aria-label': string };
     isActive: boolean;
   }> = ({ item, isActive }) => (
@@ -107,7 +107,7 @@ const SidebarNavDrawer: React.FC<SidebarNavDrawerProps> = ({
   return (
     <>
       {/* Backdrop */}
-      <div 
+      <div
         className={`
           fixed inset-0 z-40 bg-scrim/60 backdrop-blur-sm 
           transition-opacity ease-[cubic-bezier(0.16,1,0.3,1)] duration-[1000ms]
@@ -118,7 +118,7 @@ const SidebarNavDrawer: React.FC<SidebarNavDrawerProps> = ({
         aria-hidden="true"
       />
       {/* Drawer */}
-      <aside 
+      <aside
         className={`
           fixed top-0 left-0 z-50 w-72 sm:w-80 h-full 
           bg-surface-container-highest shadow-xl 

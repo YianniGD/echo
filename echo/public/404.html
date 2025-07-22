@@ -2,31 +2,33 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>echo - Page Not Found</title>
+  <title>echo - Redirecting...</title>
   <script type="text/javascript">
     (function() {
-      // The base path for your GitHub Pages site, e.g., '/echo'
+      // The base path of your repository, e.g., /my-repo
       const basePath = '/echo';
-      
-      // Get the full path from the URL, like '/echo/app'
-      const fullPath = window.location.pathname;
 
-      // Extract the part of the path that comes *after* the basePath
-      // This will be the client-side route, e.g., '/app'
-      let clientSidePath = '/'; // Default to root
-      if (fullPath.startsWith(basePath + '/')) {
-        clientSidePath = fullPath.substring(basePath.length);
+      // Get the full path from the URL
+      const path = window.location.pathname;
+
+      // Check if the path starts with the base path. If so, extract the part after it.
+      if (path.startsWith(basePath)) {
+        const redirectPath = path.substring(basePath.length);
+        const hash = window.location.hash;
+        
+        // Construct the new URL with the client-side route in the hash
+        const newUrl = `${window.location.protocol}//${window.location.host}${basePath}/#${redirectPath.substring(1)}${hash}`;
+        
+        // Redirect to the new URL
+        window.location.replace(newUrl);
+      } else {
+        // Fallback for paths not matching the base path
+        window.location.replace(basePath + '/');
       }
-      
-      // Construct the redirect URL. We want to go to the root of the site (basePath)
-      // and pass the client-side path as a hash, so the Next.js router can handle it.
-      const redirectUrl = window.location.protocol + '//' + window.location.host + basePath + '#' + clientSidePath;
-      
-      // Perform the redirect
-      window.location.replace(redirectUrl);
     })();
   </script>
 </head>
 <body>
+  If you are not redirected automatically, please <a href="/echo/">click here</a>.
 </body>
 </html>

@@ -2,8 +2,16 @@
   "version": 3,
   "pages404": true,
   "caseSensitive": false,
-  "basePath": "",
+  "basePath": "/echo",
   "redirects": [
+    {
+      "source": "/echo/",
+      "destination": "/echo",
+      "basePath": false,
+      "internal": true,
+      "statusCode": 308,
+      "regex": "^/echo/$"
+    },
     {
       "source": "/:path+/",
       "destination": "/:path+",
@@ -51,5 +59,15 @@
     "pathHeader": "x-nextjs-rewritten-path",
     "queryHeader": "x-nextjs-rewritten-query"
   },
-  "rewrites": []
+  "rewrites": {
+    "beforeFiles": [
+      {
+        "source": "/echo//_next/:path+",
+        "destination": "/echo/_next/:path+",
+        "regex": "^/echo//_next(?:/((?:[^/]+?)(?:/(?:[^/]+?))*))(?:/)?$"
+      }
+    ],
+    "afterFiles": [],
+    "fallback": []
+  }
 }
