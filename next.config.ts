@@ -10,8 +10,6 @@ const withPWA = require('@ducanh2912/next-pwa').default({
 
 const nextConfig: NextConfig = {
   output: 'export',
-  basePath: '/echo',
-  assetPrefix: '/echo/',
   typescript: {
     ignoreBuildErrors: true,
   },
@@ -19,7 +17,7 @@ const nextConfig: NextConfig = {
     ignoreDuringBuilds: true,
   },
   images: {
-    unoptimized: true,
+    unoptimized: false,
     remotePatterns: [
       {
         protocol: 'https',

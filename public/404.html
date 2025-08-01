@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Page Not Found</title>
+    <script type="text/javascript">
+      // Don't execute this script on old browsers that don't support ES6.
+      if (typeof Promise === 'undefined' || typeof Symbol === 'undefined') {
+        window.location.href = './';
+      } else {
+        // Single Page Apps for GitHub Pages
+        // This script takes the current url and converts the path and query
+        // into a hash on the root.
+        // E.g. http://foo.tld/one/two?a=b&c=d#qwe becomes
+        //      http://foo.tld/#/one/two?a=b&c=d
+        var path = window.location.pathname.replace(/^(?:\/echo)?\//, '/'); // remove /echo prefix
+        var search = window.location.search;
+        var hash = window.location.hash;
+        
+        var newPath = '/echo' + '/#' + path + search + hash;
+        window.location.replace(newPath);
+      }
+    </script>
+  </head>
+  <body>
+    <p>If you are not redirected automatically, follow this <a id="redirect-link" href="#">link to the application</a>.</p>
+  </body>
+</html>

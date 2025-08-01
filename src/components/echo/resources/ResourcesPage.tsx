@@ -3,7 +3,7 @@
 import React from 'react';
 import { HelpCircle, ExternalLink, ArrowRight, BrainCircuit, Wind, AlertTriangle, Plus, Check, Heart, Waves, ListChecks } from 'lucide-react';
 import { View, CopingMechanism } from '@/lib/types';
-import ActionButton from './ActionButton';
+import ActionButton from '@/components/echo/ActionButton';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { PREDEFINED_STRATEGIES } from '@/lib/predefined-strategies';
 import { cn } from '@/lib/utils';
@@ -320,3 +320,5 @@ const ResourcesPage: React.FC<ResourcesPageProps> = ({ onNavigateToView, onAddCo
 };
 
 export default ResourcesPage;
+
+    
