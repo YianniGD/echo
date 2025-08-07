@@ -3,10 +3,13 @@ const CACHE_NAME = 'echo-cache-v1';
 // Pre-cache the main app shell files.
 // Other files (like from the CDN) will be cached on-the-fly.
 const urlsToPreCache = [
-  '/',
-  '/index.html',
-  '/logo.svg',
-  '/manifest.json'
+  './',
+  './index.html',
+  './index.tsx',
+  './logo.svg',
+  './manifest.json',
+  './icon-192.png',
+  './icon-512.png'
 ];
 
 // Install the service worker and pre-cache the app shell.
