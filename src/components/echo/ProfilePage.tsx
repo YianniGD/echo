@@ -28,7 +28,6 @@ interface ProfilePageProps {
     onClearMedication: () => void;
     onClearAllData: () => void;
     onNavigateToView: (view: View) => void;
-    onReOnboard: () => void;
 }
 
 const widgetConfig = {
@@ -48,7 +47,7 @@ const palettes: { name: Palette; label: string; bgColor: string, textColor: stri
 const ProfilePage: React.FC<ProfilePageProps> = ({
     profileData, onUpdateProfile, currentTheme, currentPalette, onToggleTheme, onChangePalette,
     onDownloadJournal, onClearJournal, onClearPlanner, onClearMedication,
-    onClearAllData, onNavigateToView, onReOnboard
+    onClearAllData, onNavigateToView
 }) => {
     const [name, setName] = useState('');
     const [strengths, setStrengths] = useState<string[]>([]);
@@ -128,12 +127,6 @@ const ProfilePage: React.FC<ProfilePageProps> = ({
                             <input id="userName" type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder="What should we call you?"
                                 className="w-full p-4 bg-surface-container border border-outline-variant hover:border-outline focus:border-primary focus:ring-1 focus:ring-primary rounded-xl text-surface-on placeholder-surface-on-variant" 
                             />
-                        </div>
-                        <div>
-                            <p className="block text-sm font-medium text-surface-on-variant mb-1">Account</p>
-                            <p className="w-full p-4 bg-surface border border-outline-variant rounded-xl text-surface-on-variant truncate">
-                                Guest Mode
-                            </p>
                         </div>
                     </CardContent>
                 </Card>
@@ -313,12 +306,6 @@ const ProfilePage: React.FC<ProfilePageProps> = ({
                     </div>
                 </CardContent>
             </Card>
-
-            <div className="text-center pt-6 border-t border-outline-variant">
-                 <ActionButton variant="text" size="sm" leadingIcon={<RefreshCw />} onClick={onReOnboard}>
-                    Re-run Onboarding (for testing)
-                </ActionButton>
-            </div>
         </div>
     );
 };
