@@ -198,8 +198,8 @@ const AffirmationsPage: React.FC<AffirmationsPageProps> = ({ profileData, onUpda
 
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-[calc(100vh-10rem)] py-12 animate-in fade-in-0 duration-1000">
-      <div className="text-center p-4 sm:p-8 lg:p-12 bg-gradient-to-br from-primary-container via-secondary-container/30 to-tertiary-container/20 rounded-3xl shadow-2xl max-w-2xl w-full transform transition-all hover:scale-[1.01] duration-500">
+    <div className="flex flex-col items-center justify-center min-h-[calc(100vh-10rem)] py-12 animate-in fade-in-0 duration-[1000ms]">
+      <div className="text-center p-4 sm:p-8 lg:p-12 bg-gradient-to-br from-primary-container via-secondary-container/30 to-tertiary-container/20 rounded-3xl shadow-2xl max-w-2xl w-full transform transition-all hover:scale-[1.01] duration-[500ms]">
         <div className="flex flex-col items-center mb-6">
           <Sunrise className="w-16 h-16 text-primary mb-3" />
           <h2 className="font-serif text-headline-lg text-on-primary-container">
