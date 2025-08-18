@@ -1,10 +1,12 @@
-import withPWA from 'next-pwa';
+import pwa from "@ducanh2912/next-pwa";
 
-const pwaConfig = {
+const withPWA = pwa({
   dest: 'public',
   register: true,
   skipWaiting: true,
-};
+  // Disable PWA in development to avoid caching issues.
+  disable: process.env.NODE_ENV === 'development',
+});
 
 const nextConfig = {
   images: {
@@ -20,4 +22,4 @@ const nextConfig = {
   },
 };
 
-export default withPWA(pwaConfig)(nextConfig);
+export default withPWA(nextConfig);
