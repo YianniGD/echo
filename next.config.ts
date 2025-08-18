@@ -1,5 +1,11 @@
 import withPWA from 'next-pwa';
 
+const pwaConfig = {
+  dest: 'public',
+  register: true,
+  skipWaiting: true,
+};
+
 const nextConfig = {
   images: {
     unoptimized: false,
@@ -12,11 +18,6 @@ const nextConfig = {
       },
     ],
   },
-  pwa: {
-    dest: 'public',
-    register: true,
-    skipWaiting: true,
-  },
 };
 
-export default withPWA(nextConfig);
+export default withPWA(pwaConfig)(nextConfig);
