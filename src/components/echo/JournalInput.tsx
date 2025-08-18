@@ -2,13 +2,14 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import ActionButton from '@/components/echo/ActionButton';
 import { Save, X, Mic, StopCircle, File } from 'lucide-react';
+import { JournalEntry } from '@/lib/types';
 import { cn } from '@/lib/utils';
 import useSpeechRecognition from '@/hooks/use-speech-recognition';
 
 interface JournalInputProps {
   onSave: (data: { title: string; text: string; audioBase64DataUrl?: string }) => void;
   onClose: () => void;
-  initialEntry?: Omit<JournalEntry, 'id' | 'timestamp'>;
+  initialEntry?: JournalEntry | null;
 }
 
 const JournalInput: React.FC<JournalInputProps> = ({ onSave, onClose, initialEntry }) => {
