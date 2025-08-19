@@ -12,4 +12,4 @@ This is a Next.js application that serves as a personal dashboard to help you or
 - **Calendar**: View your journal entries and events in a monthly layout.
 - **And more...** including a profile page for coping mechanisms, resources, and customizable settings.
 
-The application runs in guest mode, storing all data in your browser's local storage.
+The application stores all data in your browser's local storage.

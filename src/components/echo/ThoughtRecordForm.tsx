@@ -1,14 +1,12 @@
 'use client';
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import ActionButton from '@/components/echo/ActionButton';
 import { Save, X, ArrowLeft, ArrowRight, Mic, StopCircle } from 'lucide-react';
 import useSpeechRecognition from '@/hooks/use-speech-recognition';
 import { Slider } from '@/components/ui/slider';
 import { ThoughtRecord, ThoughtRecordData } from '@/lib/types';
-import { useEditor, EditorContent } from '@tiptap/react';
-import StarterKit from '@tiptap/starter-kit';
-import Placeholder from '@tiptap/extension-placeholder';
-import { TiptapToolbar } from './TiptapToolbar';
+import RichTextEditor from './RichTextEditor';
+import { Editor } from '@tiptap/react';
 import { cn } from '@/lib/utils';
 
 interface ThoughtRecordFormProps {
@@ -46,27 +44,9 @@ const ThoughtRecordForm: React.FC<ThoughtRecordFormProps> = ({ onSave, initialDa
   const [data, setData] = useState<ThoughtRecordData>(initialFormData);
   const [formError, setFormError] = useState<string | null>(null);
   const [title, setTitle] = useState('');
+  const editorRef = useRef<Editor>(null);
 
   const currentSection = sections[currentStepIndex];
-
-  const editor = useEditor({
-    extensions: [
-      StarterKit,
-      Placeholder.configure({
-        placeholder: currentSection.placeholder,
-      }),
-    ],
-    editorProps: {
-      attributes: {
-        class: 'prose prose-sm sm:prose-base dark:prose-invert max-w-none focus:outline-none flex-grow min-h-[200px]',
-      },
-    },
-    onUpdate: ({ editor }) => {
-      const sectionId = sections[currentStepIndex].id;
-      setData(prevData => ({ ...prevData, [sectionId]: editor.getHTML() }));
-      if (formError) setFormError(null);
-    },
-  }, [currentSection.placeholder]); 
 
   // Load initial data when the form becomes active.
   useEffect(() => {
@@ -83,27 +63,21 @@ const ThoughtRecordForm: React.FC<ThoughtRecordFormProps> = ({ onSave, initialDa
     }
   }, [isActive, recordToEdit]);
 
-  // Update editor content when the step changes or the editor instance is recreated.
+  // Focus editor and scroll to top when step changes
   useEffect(() => {
-    if (!editor || !isActive) return;
-
-    const contentForStep = data[currentSection.id] || '';
-    if (editor.getHTML() !== contentForStep) {
-        editor.commands.setContent(contentForStep, false);
+    if (isActive) {
+        editorRef.current?.commands.focus();
+        const formTop = document.getElementById('thought-record-form-top');
+        formTop?.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
-    
-    editor.commands.focus();
-    const formTop = document.getElementById('thought-record-form-top');
-    formTop?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-
-  }, [currentStepIndex, editor, isActive]);
+  }, [currentStepIndex, isActive]);
 
 
   const onTranscriptUpdate = useCallback((transcript: string, isFinal: boolean) => {
-    if (isFinal && editor) {
-      editor.chain().focus().insertContent(transcript.trim() + ' ').run();
+    if (isFinal && editorRef.current) {
+      editorRef.current.chain().focus().insertContent(transcript.trim() + ' ').run();
     }
-  }, [editor]);
+  }, []);
 
   const { isRecording, startRecording, stopRecording, speechError: dictationError, isSpeechSupported } = useSpeechRecognition({ onTranscriptUpdate });
   
@@ -166,7 +140,7 @@ const ThoughtRecordForm: React.FC<ThoughtRecordFormProps> = ({ onSave, initialDa
       stopRecording();
     } else {
       await startRecording();
-      editor?.commands.focus();
+      editorRef.current?.commands.focus();
     }
   };
 
@@ -225,12 +199,16 @@ const ThoughtRecordForm: React.FC<ThoughtRecordFormProps> = ({ onSave, initialDa
                 )}
 
                 <div className="relative pt-2">
-                    <div className="flex flex-col bg-surface-container-low border border-outline-variant rounded-xl overflow-hidden">
-                        <TiptapToolbar editor={editor} />
-                        <div className="p-4 flex-grow min-h-[250px]">
-                            <EditorContent editor={editor} />
-                        </div>
-                    </div>
+                    <RichTextEditor
+                        ref={editorRef}
+                        content={data[currentSection.id] || ''}
+                        onChange={(newContent) => {
+                            setData(prev => ({ ...prev, [currentSection.id]: newContent }));
+                            if (formError) setFormError(null);
+                        }}
+                        placeholder={currentSection.placeholder}
+                        editorClassName="min-h-[250px]"
+                    />
                      {isSpeechSupported && (
                         <ActionButton
                             onClick={handleToggleDictation}

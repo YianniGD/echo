@@ -268,7 +268,7 @@ export const EchoApp: React.FC = () => {
   }, []);
 
   const handleUpdateMedication = useCallback((updatedMed: Medication) => {
-    setMedications(prevMeds => prevMeds.map(med => med.id === updatedMed.id ? { ...updatedMed, frequency: updatedMed.frequency.trim() || 'As needed' } : med).sort((a,b) => b.addedTimestamp - a.addedTimestamp));
+    setMedications(prevMeds => prevMeds.map(med => med.id === updatedMed.id ? { ...updatedMed, frequency: updatedMed.frequency.trim() || 'As needed' } : med).sort((a,b) => b.addedTimestamp - a.timestamp));
   }, []);
 
   const handleDeleteMedication = useCallback((id: string) => {
@@ -430,6 +430,7 @@ export const EchoApp: React.FC = () => {
             onClearMedication={handleClearMedicationData} 
             onClearAllData={handleClearAllData} 
             onNavigateToView={navigateToView}
+            onReOnboard={() => setProfileData({ ...profileData, name: '' })}
             /></div>;
         case 'resources': return <div className="flex justify-center"><ResourcesPage onNavigateToView={navigateToView} onAddCopingMechanism={handleAddCopingMechanism} userCopingMechanisms={profileData.copingMechanisms} /></div>;
         case 'understanding-cbt': return <div className="flex justify-center"><UnderstandingCBTPage onNavigateBack={() => navigateToView('resources')} /></div>;

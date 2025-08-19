@@ -28,6 +28,7 @@ interface ProfilePageProps {
     onClearMedication: () => void;
     onClearAllData: () => void;
     onNavigateToView: (view: View) => void;
+    onReOnboard: () => void;
 }
 
 const widgetConfig = {
@@ -47,7 +48,7 @@ const palettes: { name: Palette; label: string; bgColor: string, textColor: stri
 const ProfilePage: React.FC<ProfilePageProps> = ({
     profileData, onUpdateProfile, currentTheme, currentPalette, onToggleTheme, onChangePalette,
     onDownloadJournal, onClearJournal, onClearPlanner, onClearMedication,
-    onClearAllData, onNavigateToView
+    onClearAllData, onNavigateToView, onReOnboard
 }) => {
     const [name, setName] = useState('');
     const [strengths, setStrengths] = useState<string[]>([]);
@@ -306,6 +307,7 @@ const ProfilePage: React.FC<ProfilePageProps> = ({
                     </div>
                 </CardContent>
             </Card>
+
         </div>
     );
 };

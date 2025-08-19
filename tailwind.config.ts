@@ -21,7 +21,7 @@ const config = {
     extend: {
       fontFamily: {
         sans: ['Noto Sans', 'sans-serif'],
-        serif: ['Noto Serif', 'serif'],
+        serif: ['Noto Sans', 'sans-serif'],
         geologica: ['Geologica', 'sans-serif'],
       },
       fontSize: {

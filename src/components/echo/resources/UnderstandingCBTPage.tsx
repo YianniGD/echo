@@ -13,7 +13,7 @@ interface UnderstandingCBTPageProps {
 
 const UnderstandingCBTPage: React.FC<UnderstandingCBTPageProps> = ({ onNavigateBack }) => {
     return (
-        <div className="space-y-8 animate-in fade-in-0 duration-[750ms] max-w-3xl w-full">
+        <div className="space-y-8 animate-in fade-in-0 duration-750 max-w-3xl w-full">
             <ActionButton onClick={onNavigateBack} variant="text" size="sm" leadingIcon={<ArrowLeft />} className="mb-4">
                 Back to Resources
             </ActionButton>

@@ -2,9 +2,11 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import ActionButton from '@/components/echo/ActionButton';
 import { Save, X, Mic, StopCircle, File } from 'lucide-react';
-import { JournalEntry } from '@/lib/types';
 import { cn } from '@/lib/utils';
 import useSpeechRecognition from '@/hooks/use-speech-recognition';
+import { JournalEntry } from '@/lib/types';
+import RichTextEditor from './RichTextEditor';
+import { Editor } from '@tiptap/react';
 
 interface JournalInputProps {
   onSave: (data: { title: string; text: string; audioBase64DataUrl?: string }) => void;
@@ -14,22 +16,16 @@ interface JournalInputProps {
 
 const JournalInput: React.FC<JournalInputProps> = ({ onSave, onClose, initialEntry }) => {
   const [title, setTitle] = useState('');
+  const [text, setText] = useState('');
   const [audioDataUrl, setAudioDataUrl] = useState<string | undefined>(undefined);
   const [statusText, setStatusText] = useState('Ready to record');
   const [isProcessing, setIsProcessing] = useState(false);
   
-  const editorRef = useRef<HTMLDivElement>(null);
+  const editorRef = useRef<Editor>(null);
 
   const handleTranscriptUpdate = useCallback((transcript: string, isFinal: boolean) => {
     if (editorRef.current && isFinal) {
-      if (editorRef.current.classList.contains('placeholder-active')) {
-          editorRef.current.textContent = '';
-          editorRef.current.classList.remove('placeholder-active');
-      }
-      if (editorRef.current.textContent && !editorRef.current.textContent.endsWith(' ')) {
-        editorRef.current.textContent += ' ';
-      }
-      editorRef.current.textContent += transcript.trim() + ' ';
+      editorRef.current.chain().focus().insertContent(transcript.trim() + ' ').run();
     }
   }, []);
   
@@ -44,20 +40,12 @@ const JournalInput: React.FC<JournalInputProps> = ({ onSave, onClose, initialEnt
   useEffect(() => {
     if (initialEntry) {
       setTitle(initialEntry.title || '');
+      setText(initialEntry.text || '');
       setAudioDataUrl(initialEntry.audioBase64DataUrl);
-      if (editorRef.current) {
-          editorRef.current.innerHTML = initialEntry.text || '';
-          if (editorRef.current.textContent?.trim()) {
-            editorRef.current.classList.remove('placeholder-active');
-          }
-      }
     } else {
         setTitle('');
+        setText('');
         setAudioDataUrl(undefined);
-        if (editorRef.current) {
-            editorRef.current.innerHTML = '';
-            editorRef.current.classList.add('placeholder-active');
-        }
     }
   }, [initialEntry]);
   
@@ -102,16 +90,12 @@ const JournalInput: React.FC<JournalInputProps> = ({ onSave, onClose, initialEnt
 
   const handleSaveClick = () => {
     const finalTitle = title.trim() || `Journal Entry - ${new Date().toLocaleDateString()}`;
-    const textContent = editorRef.current?.innerHTML || '';
-    onSave({ title: finalTitle, text: textContent, audioBase64DataUrl: audioDataUrl });
+    onSave({ title: finalTitle, text: text, audioBase64DataUrl: audioDataUrl });
   };
   
   const handleNewNote = () => {
     setTitle('');
-    if (editorRef.current) {
-        editorRef.current.innerHTML = '';
-        editorRef.current.classList.add('placeholder-active');
-    }
+    setText('');
     setAudioDataUrl(undefined);
     if(isRecording) stopRecording();
     setIsProcessing(false);
@@ -141,19 +125,12 @@ const JournalInput: React.FC<JournalInputProps> = ({ onSave, onClose, initialEnt
 
       <div className="flex-grow flex flex-col min-h-0 md:max-w-3xl md:mx-auto md:w-full">
         <div className="flex-grow p-4 md:p-6 overflow-y-auto min-h-0">
-            <div 
+             <RichTextEditor
                 ref={editorRef}
-                contentEditable={true} 
-                className="prose prose-sm sm:prose-base dark:prose-invert max-w-none focus:outline-none h-full placeholder-active:text-surface-on-variant/80"
-                data-placeholder="Start typing or use the microphone to dictate your thoughts..."
-                onInput={(e) => {
-                    const target = e.currentTarget;
-                    if (target.textContent?.trim()) {
-                        target.classList.remove('placeholder-active');
-                    } else {
-                        target.classList.add('placeholder-active');
-                    }
-                }}
+                content={text}
+                onChange={setText}
+                placeholder="Start typing or use the microphone to dictate your thoughts..."
+                editorClassName="min-h-full"
             />
         </div>
         

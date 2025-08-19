@@ -39,7 +39,7 @@ export interface PlannerTask {
 
 export interface DailyPlan {
   date: string; // YYYY-MM-DD
-  tasks: PlannerTask[]; // General tasks, potentially from free-form text input
+  notes: string; // General tasks, potentially from free-form text input
   mood?: string; // e.g., "happy", "sad", "productive"
   goals?: PlannerTask[]; // Specific, checkable goals for the day
 }

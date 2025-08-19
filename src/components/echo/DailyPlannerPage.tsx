@@ -17,6 +17,8 @@ import WeekView from '@/components/echo/calendar/WeekView';
 import DayView from '@/components/echo/calendar/DayView';   
 import EventModal from '@/components/echo/calendar/EventModal';
 import EventViewModal from '@/components/echo/calendar/EventViewModal';
+import RichTextEditor from './RichTextEditor';
+import { Editor } from '@tiptap/react';
 
 type PlannerViewMode = 'goals' | 'calendar';
 type CalendarViewMode = 'month' | 'week' | 'day';
@@ -30,19 +32,6 @@ const formatWeekRange = (startDate: Date): string => {
   const endMonth = endDate.toLocaleString('en-US', { month: 'short' });
   if (startMonth === endMonth) return `${startMonth} ${startDate.getDate()} - ${endDate.getDate()}, ${startDate.getFullYear()}`;
   return `${startMonth} ${startDate.getDate()} - ${endMonth} ${endDate.getDate()}, ${startDate.getFullYear()}`;
-};
-const formatTasksToText = (tasks: PlannerTask[]): string => tasks.map(task => `- [${task.completed ? 'x' : ' '}] ${task.text}`).join('\n');
-const parseTextToTasks = (text: string): PlannerTask[] => {
-    if (!text.trim()) return [];
-    const TASK_REGEX = /^-?\s*\[([xX\s])\]\s*(.*)/;
-    return text.split('\n').map((line, index) => {
-        const match = line.match(TASK_REGEX);
-        return {
-            id: `${Date.now()}-${index}`,
-            text: match ? match[2].trim() : line.trim(),
-            completed: match ? match[1].toLowerCase() === 'x' : false,
-        };
-    }).filter(task => task.text.length > 0);
 };
 
 // --- Mood Options ---
@@ -87,14 +76,14 @@ const PlannerPage: React.FC<PlannerPageProps> = ({
   const [currentMood, setCurrentMood] = useState<string | undefined>(undefined);
   const [dailyGoals, setDailyGoals] = useState<PlannerTask[]>([]);
   const [newDailyGoalText, setNewDailyGoalText] = useState<string>('');
-  const [generalTasksText, setGeneralTasksText] = useState<string>('');
+  const [dailyNotes, setDailyNotes] = useState<string>('');
   const [weeklyGoals, setWeeklyGoals] = useState<PlannerTask[]>([]);
   const [newWeeklyGoalText, setNewWeeklyGoalText] = useState('');
   const [weeklyNotes, setWeeklyNotes] = useState<string>('');
-  const generalTasksTextAreaRef = useRef<HTMLTextAreaElement>(null);
   const newDailyGoalInputRef = useRef<HTMLInputElement>(null);
   const newWeeklyGoalInputRef = useRef<HTMLInputElement>(null);
   const isInitialLoad = useRef(true);
+  const dailyNotesEditorRef = useRef<Editor>(null);
 
   // Calendar State
   const [currentDisplayDate, setCurrentDisplayDate] = useState(new Date());
@@ -114,7 +103,7 @@ const PlannerPage: React.FC<PlannerPageProps> = ({
     const todaysPlan = getDailyPlan(formattedToday);
     setCurrentMood(todaysPlan?.mood);
     setDailyGoals(todaysPlan?.goals || []);
-    setGeneralTasksText(formatTasksToText(todaysPlan?.tasks || []));
+    setDailyNotes(todaysPlan?.notes || '');
     const currentWeeklyPlan = getWeeklyPlan(formattedWeekKey);
     setWeeklyGoals(currentWeeklyPlan?.goals || []);
     setWeeklyNotes(currentWeeklyPlan?.notes || '');
@@ -125,8 +114,8 @@ const PlannerPage: React.FC<PlannerPageProps> = ({
   // --- Data Saving Effects ---
   useEffect(() => {
     if (isInitialLoad.current) return;
-    saveDailyPlan({ date: formattedToday, mood: currentMood, goals: dailyGoals, tasks: parseTextToTasks(generalTasksText) });
-  }, [currentMood, dailyGoals, generalTasksText, formattedToday, saveDailyPlan]);
+    saveDailyPlan({ date: formattedToday, mood: currentMood, goals: dailyGoals, notes: dailyNotes });
+  }, [currentMood, dailyGoals, dailyNotes, formattedToday, saveDailyPlan]);
 
   useEffect(() => {
     if (isInitialLoad.current) return;
@@ -135,13 +124,13 @@ const PlannerPage: React.FC<PlannerPageProps> = ({
 
   // --- Planner Handlers ---
   const onGeneralTasksTranscriptUpdate = useCallback((transcript: string, isFinal: boolean) => {
-    if (isFinal) {
-      setGeneralTasksText(prev => prev + (prev && !prev.endsWith(' ') ? ' ' : '') + transcript.trim());
-      generalTasksTextAreaRef.current?.focus();
-      setTimeout(() => { if(generalTasksTextAreaRef.current) generalTasksTextAreaRef.current.selectionStart = generalTasksTextAreaRef.current.selectionEnd = generalTasksTextAreaRef.current.value.length; }, 0);
+    if (isFinal && dailyNotesEditorRef.current) {
+        dailyNotesEditorRef.current.chain().focus().insertContent(transcript.trim() + ' ').run();
     }
   }, []);
+
   const generalTasksSpeech = useSpeechRecognition({ onTranscriptUpdate: onGeneralTasksTranscriptUpdate });
+
   const handleAddDailyGoal = () => {
     if (newDailyGoalText.trim()) {
       setDailyGoals(prev => [...prev, { id: Date.now().toString(), text: newDailyGoalText.trim(), completed: false }]);
@@ -156,23 +145,32 @@ const PlannerPage: React.FC<PlannerPageProps> = ({
         newWeeklyGoalInputRef.current?.focus();
     }
   };
+
+  const plainTextFromHtml = (html: string) => {
+      const tempDiv = document.createElement('div');
+      tempDiv.innerHTML = html;
+      return tempDiv.textContent || tempDiv.innerText || "";
+  }
+
   const handleSaveToJournal = () => {
-    let journalText = `Week of ${formatWeekRange(currentWeekStartDate)}\n\n`;
+    let journalText = `<h2>Week of ${formatWeekRange(currentWeekStartDate)}</h2>`;
     if (weeklyGoals.length > 0) {
-      journalText += "--- Weekly Goals ---\n";
-      weeklyGoals.forEach(g => { journalText += `- [${g.completed ? 'X' : ' '}] ${g.text}\n`; });
-      journalText += "\n";
+      journalText += "<h3>Weekly Goals</h3><ul>";
+      weeklyGoals.forEach(g => { journalText += `<li>${g.completed ? '[X]' : '[ ]'} ${g.text}</li>`; });
+      journalText += "</ul>";
     }
-    if (weeklyNotes.trim()) {
-      journalText += "--- Weekly Notes ---\n" + weeklyNotes.trim() + "\n\n";
+    if (plainTextFromHtml(weeklyNotes).trim()) {
+      journalText += "<h3>Weekly Notes</h3>" + weeklyNotes;
     }
-    journalText += `--- Today's Focus: ${today.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })} ---\n`;
-    if (currentMood) journalText += `Mood: ${currentMood}\n`;
+    journalText += `<h3>Today's Focus: ${today.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}</h3>`;
+    if (currentMood) journalText += `<p><strong>Mood:</strong> ${currentMood}</p>`;
     if (dailyGoals.length > 0) {
-      dailyGoals.forEach(g => { journalText += `- [${g.completed ? 'X' : ' '}] ${g.text}\n`; });
+       journalText += "<h4>Daily Goals</h4><ul>";
+      dailyGoals.forEach(g => { journalText += `<li>${g.completed ? '[X]' : '[ ]'} ${g.text}</li>`; });
+      journalText += "</ul>";
     }
-    if (generalTasksText.trim()) {
-      journalText += "Notes & Tasks:\n" + generalTasksText.trim() + "\n";
+    if (plainTextFromHtml(dailyNotes).trim()) {
+      journalText += "<h4>Daily Notes & Tasks</h4>" + dailyNotes;
     }
     onSavePlanToJournal(journalText);
   };
@@ -266,8 +264,15 @@ const PlannerPage: React.FC<PlannerPageProps> = ({
         </div>
         <div>
             <div className="flex items-center mb-2"><Edit3 className="w-6 h-6 text-tertiary mr-2" /><h4 className="font-serif text-title-lg text-surface-on">Daily Notes & Tasks</h4></div>
-            <div className="relative"><textarea ref={generalTasksTextAreaRef} value={generalTasksText} onChange={e => setGeneralTasksText(e.target.value)} placeholder="Jot down other thoughts, to-dos... Use [ ] or [x] for tasks." rows={8} className="w-full p-3 bg-surface-container border border-outline-variant rounded-xl text-body-lg" aria-label="General tasks and notes"/>
-            {generalTasksSpeech.isSpeechSupported && (<ActionButton onClick={() => generalTasksSpeech.isRecording ? generalTasksSpeech.stopRecording() : generalTasksSpeech.startRecording()} variant={generalTasksSpeech.isRecording ? "filled" : "tonal"} size="sm" isIconOnly className="absolute top-2.5 right-2.5" title={generalTasksSpeech.isRecording ? "Stop Dictation" : "Start Dictation"} leadingIcon={generalTasksSpeech.isRecording ? <StopCircle /> : <Mic />} />)}</div>
+            <div className="relative">
+                <RichTextEditor
+                    ref={dailyNotesEditorRef}
+                    content={dailyNotes}
+                    onChange={setDailyNotes}
+                    placeholder="Jot down other thoughts, to-dos..."
+                />
+                {generalTasksSpeech.isSpeechSupported && (<ActionButton onClick={() => generalTasksSpeech.isRecording ? generalTasksSpeech.stopRecording() : generalTasksSpeech.startRecording()} variant={generalTasksSpeech.isRecording ? "filled" : "tonal"} size="sm" isIconOnly className="absolute top-3 right-3 z-10" title={generalTasksSpeech.isRecording ? "Stop Dictation" : "Start Dictation"} leadingIcon={generalTasksSpeech.isRecording ? <StopCircle /> : <Mic />} />)}
+            </div>
             {generalTasksSpeech.speechError && <p className="text-label-md text-error mt-1 px-1">{generalTasksSpeech.speechError}</p>}
         </div>
       </section>
@@ -292,11 +297,15 @@ const PlannerPage: React.FC<PlannerPageProps> = ({
         </div>
         <div>
             <div className="flex items-center mb-2"><Edit3 className="w-6 h-6 text-tertiary mr-2" /><h4 className="font-serif text-title-lg text-surface-on">Weekly Notes</h4></div>
-            <textarea value={weeklyNotes} onChange={e => setWeeklyNotes(e.target.value)} placeholder="General thoughts for the week..." rows={5} className="w-full p-3 bg-surface-container border border-outline-variant rounded-xl text-body-lg" aria-label="Weekly notes"/>
+            <RichTextEditor
+                content={weeklyNotes}
+                onChange={setWeeklyNotes}
+                placeholder="General thoughts for the week..."
+            />
         </div>
       </section>
       <div className="mt-8 flex justify-center">
-        <ActionButton onClick={handleSaveToJournal} variant="filled" size="lg" leadingIcon={<Save />} disabled={!(weeklyGoals.length > 0 || weeklyNotes.trim() || currentMood || dailyGoals.length > 0 || generalTasksText.trim())} aria-label="Save current plans to journal">
+        <ActionButton onClick={handleSaveToJournal} variant="filled" size="lg" leadingIcon={<Save />} disabled={!(weeklyGoals.length > 0 || plainTextFromHtml(weeklyNotes).trim() || currentMood || dailyGoals.length > 0 || plainTextFromHtml(dailyNotes).trim())} aria-label="Save current plans to journal">
           Save Plan to Journal
         </ActionButton>
       </div>

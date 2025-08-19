@@ -148,7 +148,7 @@ const SidebarNavDrawer: React.FC<SidebarNavDrawerProps> = ({
                 className="text-surface-on-variant hover:bg-surface-on-variant/10"
                 aria-label="Close navigation menu"
               >
-                <X className="w-6 h-6" />
+                <X className="w-6 w-6" />
               </ActionButton>
             </div>
           </div>
