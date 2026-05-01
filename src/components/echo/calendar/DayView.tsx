@@ -1,5 +1,5 @@
 'use client';
-import React, from 'react';
+import React from 'react';
 import { CalendarEvent, JournalEntry, ThoughtRecord } from '@/lib/types';
 import { fromISOStringToLocalDate, isSameDay, formatToHHMM } from '@/components/echo/calendar/DateUtils';
 import { BookOpen, Clipboard, ChevronLeft, ChevronRight } from 'lucide-react';

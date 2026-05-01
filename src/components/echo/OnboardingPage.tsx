@@ -46,6 +46,7 @@ const OnboardingPage: React.FC<OnboardingPageProps> = ({ onOnboardingComplete })
       strengths: selectedStrengths,
       copingMechanisms: selectedMechanisms,
       dashboardWidgets: { planner: true, affirmations: true, medication: true, copingMechanisms: true },
+      favoriteAffirmations: [],
     });
   };
 
